@@ -1,2 +1,2 @@
-# georchestra-deploy
-Allow to quickly deploy an "All in One" Georchestra Instance on Jessie
+# georchestra-setup
+Allow to quickly setup an "All in One" Debian Jessie Server for Georchestra
