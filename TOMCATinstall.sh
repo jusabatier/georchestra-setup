@@ -62,7 +62,7 @@ stop(){
 
 restart(){
    stop
-   sleep 10
+   sleep 50
    start
 }
 
