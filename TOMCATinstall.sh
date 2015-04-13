@@ -30,6 +30,8 @@ sed -i -e "s/<Connector port=\"8009\" protocol=\"AJP\/1.3\" redirectPort=\"8443\
 
 chown -R tomcat:tomcat /opt/tomcat-$CUSTOMCAT_NAME
 
+wget https://jdbc.postgresql.org/download/postgresql-9.4-1201.jdbc41.jar -O /opt/tomcat-$CUSTOMCAT_NAME/lib/postgresql-9.4-1201.jdbc41.jar
+
 cat <<EOT >> /etc/init.d/georchestra-$CUSTOMCAT_NAME
 #!/bin/bash
 
