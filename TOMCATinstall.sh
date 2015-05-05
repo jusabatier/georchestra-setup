@@ -2,10 +2,10 @@
 
 if [ $CUSTOMCAT_VERSION -eq 6 ]; then
 	tar -xzf /tmp/tomcat-6.tar.gz -C /opt
-	mv /opt/apache-tomcat-6.0.43 /opt/tomcat-$CUSTOMCAT_NAME
+	mv /opt/apache-tomcat-6.* /opt/tomcat-$CUSTOMCAT_NAME
 elif [ $CUSTOMCAT_VERSION -eq 7 ]; then
 	tar -xzf /tmp/tomcat-7.tar.gz -C /opt
-	mv /opt/apache-tomcat-7.0.57 /opt/tomcat-$CUSTOMCAT_NAME
+	mv /opt/apache-tomcat-7.* /opt/tomcat-$CUSTOMCAT_NAME
 fi
 
 rm -rf /opt/tomcat-$CUSTOMCAT_NAME/webapps/*
