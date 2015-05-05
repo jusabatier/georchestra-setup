@@ -23,6 +23,9 @@ SSL_LOCALITY="Le Puy-en-Velay"
 SSL_ORGANISATION="Communauté d'agglomeration"
 SSL_UNIT="Service SIG"
 
+_script="$(readlink -f ${BASH_SOURCE[0]})"
+_base="$(dirname $_script)"
+
 #########################################################################
 #
 # Installation paquets utilitaires
@@ -63,8 +66,8 @@ useradd -g tomcat -s /usr/sbin/nologin -m -d /home/tomcat tomcat
 
 # wget http://mir2.ovh.net/ftp.apache.org/dist/tomcat/tomcat-6/v6.0.43/bin/apache-tomcat-6.0.43.tar.gz -O /tmp/tomcat-6.tar.gz
 # wget http://mir2.ovh.net/ftp.apache.org/dist/tomcat/tomcat-7/v7.0.57/bin/apache-tomcat-7.0.57.tar.gz -O /tmp/tomcat-7.tar.gz
-cp tomcat-dist/apache-tomcat-6.0.43.tar.gz /tmp/tomcat-6.tar.gz
-cp tomcat-dist/apache-tomcat-7.0.61.tar.gz /tmp/tomcat-7.tar.gz
+cp $_base/tomcat-dist/apache-tomcat-6.0.43.tar.gz /tmp/tomcat-6.tar.gz
+cp $_base/tomcat-dist/apache-tomcat-7.0.61.tar.gz /tmp/tomcat-7.tar.gz
 
 mkdir /var/sig
 mkdir /var/sig/tmp_extracts
