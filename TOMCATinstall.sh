@@ -44,32 +44,77 @@ cat <<EOT >> /etc/init.d/georchestra-$CUSTOMCAT_NAME
 # Short-Description: Start daemon at boot time
 # Description:       Enable service provided by daemon.
 ### END INIT INFO
-
-START_TOMCAT=/opt/tomcat-$CUSTOMCAT_NAME/bin/startup.sh
-STOP_TOMCAT=/opt/tomcat-$CUSTOMCAT_NAME/bin/shutdown.sh
+CATALINA_BASE=/opt/tomcat-$CUSTOMCAT_NAME
+START_TOMCAT=\$CATALINA_BASE/bin/startup.sh
+STOP_TOMCAT=\$CATALINA_BASE/bin/shutdown.sh
 PROG="georchestra-$CUSTOMCAT_NAME"
+SHUTDOWN_WAIT=30
 
 start(){
-     echo -n "Starting \$PROG: "
-	#Demarrer avec lutilisateur tomcat
-     su -p -s /bin/sh tomcat \${START_TOMCAT}
-     echo "done."
+    echo -n "Starting \$PROG: "
+	isrunning
+	if [ "\$?" = 0 ]; then
+		echo "\$PROG already running"
+		return 0
+	fi
+	
+	su -p -s /bin/sh tomcat \${START_TOMCAT}
+	echo "done."
 }
 
 stop(){
-     echo -n "Shutting down \$PROG: "
-     su -p -s /bin/sh tomcat \${STOP_TOMCAT}
-     echo "done."
+    echo -n "Shutting down \$PROG: "
+
+	if ! isrunning; then
+		echo "\$PROG already stopped"
+		return 0
+	fi
+
+	su -p -s /bin/sh tomcat \${STOP_TOMCAT}
+	
+	if isrunning ; then
+		echo -n "Waiting \$PROG to stop..."
+		sleep \$SHUTDOWN_WAIT
+	fi
+	
+	if isrunning ; then
+		echo "Still running, brutal kill !"
+		start-stop-daemon --stop --pid \$pid --user "tomcat" --retry=TERM/20/KILL/5 >/dev/null
+	else
+		echo ""
+	fi
+	
+	echo "done."
 }
 
 restart(){
    stop
-   sleep 50
    start
 }
 
 reload(){
    restart
+}
+
+isrunning() {
+	findpid
+
+	if [ "\$pid" = "" ]; then
+		return 1
+	elif [ "\$pid" -gt 0 ]; then
+		return 0
+	fi
+}
+
+findpid() {
+	pid=""
+	pid=\$(pgrep -U tomcat -f "^.*/bin/java.*catalina.base=\$CATALINA_BASE")
+
+	# validate output of pgrep
+	if ! [ "\$pid" = "" ] && ! [ "\$pid" -gt 0 ]; then
+		log_failure_msg "Unable to determine if \$PROG is running"
+		exit 1
+	fi
 }
 
 case "\$1" in
