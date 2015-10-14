@@ -1,26 +1,15 @@
 #!/bin/bash
 
-if [ $CUSTOMCAT_VERSION -eq 6 ]; then
-	tar -xzf /tmp/tomcat-6.tar.gz -C /opt
-	mv /opt/apache-tomcat-6.* /opt/tomcat-$CUSTOMCAT_NAME
-elif [ $CUSTOMCAT_VERSION -eq 7 ]; then
-	tar -xzf /tmp/tomcat-7.tar.gz -C /opt
-	mv /opt/apache-tomcat-7.* /opt/tomcat-$CUSTOMCAT_NAME
-fi
+tar -xzf /tmp/tomcat-8.tar.gz -C /opt
+mv /opt/apache-tomcat-8.* /opt/tomcat-$CUSTOMCAT_NAME
 
 rm -rf /opt/tomcat-$CUSTOMCAT_NAME/webapps/*
 mkdir /opt/tomcat-$CUSTOMCAT_NAME/.java
 cp /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh.bak
 
-if [ $CUSTOMCAT_VERSION -eq 6 ]; then
-	sed '24 c\CATALINA_HOME="/opt/tomcat-'"$CUSTOMCAT_NAME"'"' /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh.bak | 
-	sed '42 c\JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64"' |
-	sed '48 c\JAVA_OPTS="'"$CUSTOMCAT_JAVAOPTS"'"' > /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh
-elif [ $CUSTOMCAT_VERSION -eq 7 ]; then
-	sed '27 c\CATALINA_HOME="/opt/tomcat-'"$CUSTOMCAT_NAME"'"' /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh.bak | 
-	sed '49 c\JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64"' |
-	sed '60 c\JAVA_OPTS="'"$CUSTOMCAT_JAVAOPTS"'"' > /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh
-fi
+sed '27 c\CATALINA_HOME="/opt/tomcat-'"$CUSTOMCAT_NAME"'"' /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh.bak | 
+sed '49 c\JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64"' |
+sed '60 c\JAVA_OPTS="'"$CUSTOMCAT_JAVAOPTS"'"' > /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh
 
 rm /opt/tomcat-$CUSTOMCAT_NAME/bin/catalina.sh.bak
 
