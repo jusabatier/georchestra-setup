@@ -2,12 +2,12 @@
 
 debconf-set-selections <<< "slapd slapd/password1 password $LDAP_PASSWORD"
 debconf-set-selections <<< "slapd slapd/password2 password $LDAP_PASSWORD"
-debconf-set-selections <<< "slapd slapd/backend select HDB"
+debconf-set-selections <<< "slapd slapd/backend select MDB"
 apt-get -y install slapd ldap-utils
 
 service slapd stop
-if [ -f /etc/ldap/slapd.d/cn\=config/olcDatabase\=\{1\}hdb.ldif ] ; then
-	rm /etc/ldap/slapd.d/cn\=config/olcDatabase\=\{1\}hdb.ldif
+if [ -f /etc/ldap/slapd.d/cn\=config/olcDatabase\=\{1\}mdb.ldif ] ; then
+	rm /etc/ldap/slapd.d/cn\=config/olcDatabase\=\{1\}mdb.ldif
 fi
 rm /var/lib/ldap/*
 service slapd start
